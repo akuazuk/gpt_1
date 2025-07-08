@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Bayes Calculator</title>
+</head>
+<body>
+  <h1>Bayes Theorem Calculator</h1>
+  <form method="post">
+    <label for="p_a">P(A):</label>
+    <input type="number" step="any" name="p_a" id="p_a" required><br>
+    <label for="p_b_given_a">P(B|A):</label>
+    <input type="number" step="any" name="p_b_given_a" id="p_b_given_a" required><br>
+    <label for="p_b_given_not_a">P(B|not A):</label>
+    <input type="number" step="any" name="p_b_given_not_a" id="p_b_given_not_a" required><br>
+    <button type="submit">Compute</button>
+  </form>
+
+  {% if result is not none %}
+  <p>P(A|B) = {{ '%.5f'|format(result) }}</p>
+  {% endif %}
+  {% if error %}
+  <p style="color: red;">{{ error }}</p>
+  {% endif %}
+</body>
+</html>

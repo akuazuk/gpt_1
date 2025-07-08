@@ -1,6 +1,6 @@
 # Bayes Theorem Calculator
 
-This repository contains a simple command line application for computing the posterior probability `P(A|B)` using Bayes' theorem.
+This repository contains a simple command line application and a small web application for computing the posterior probability `P(A|B)` using Bayes' theorem.
 
 ## Usage
 
@@ -29,4 +29,15 @@ Tests are provided using `pytest`. To run them execute:
 ```bash
 pytest
 ```
+
+## Web Application
+
+Install the dependencies and run the Flask application:
+
+```bash
+pip install -r requirements.txt
+python app.py
+```
+
+Then open your browser at `http://localhost:5000` to use a simple form-based interface for Bayes theorem calculations.
 
