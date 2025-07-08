@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Bankruptcy Probability Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Bankruptcy Probability Calculator</h1>
+  <form method="post">
+    <label for="target_cash">Required cash within 30 days:</label>
+    <input type="number" step="any" name="target_cash" id="target_cash" value="{{ params.get('target_cash', 1600) }}" required><br>
+
+    <label for="weekly_min">Weekly cash flow (min):</label>
+    <input type="number" step="any" name="weekly_min" id="weekly_min" value="{{ params.get('weekly_min', 350) }}" required><br>
+
+    <label for="weekly_max">Weekly cash flow (max):</label>
+    <input type="number" step="any" name="weekly_max" id="weekly_max" value="{{ params.get('weekly_max', 390) }}" required><br>
+
+    <label for="high_risk_day">High risk day:</label>
+    <input type="number" name="high_risk_day" id="high_risk_day" value="{{ params.get('high_risk_day', 30) }}" required><br>
+
+    <label for="prob_at_high_risk">Probability on high risk day:</label>
+    <input type="number" step="any" name="prob_at_high_risk" id="prob_at_high_risk" value="{{ params.get('prob_at_high_risk', 0.8) }}" required><br>
+
+    <label for="bankruptcy_day">Bankruptcy day:</label>
+    <input type="number" name="bankruptcy_day" id="bankruptcy_day" value="{{ params.get('bankruptcy_day', 37) }}" required><br>
+
+    <button type="submit">Calculate</button>
+  </form>
+
+  {% if params.get('error') %}
+  <p style="color: red;">{{ params.error }}</p>
+  {% endif %}
+
+  {% if probabilities %}
+  <h2>Cumulative Probability</h2>
+  <canvas id="chart" width="600" height="400"></canvas>
+  <script>
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: {{ probabilities.days | tojson }},
+        datasets: [
+          {
+            label: 'Weekly min',
+            data: {{ probabilities.min | tojson }},
+            borderColor: 'red',
+            fill: false
+          },
+          {
+            label: 'Weekly max',
+            data: {{ probabilities.max | tojson }},
+            borderColor: 'blue',
+            fill: false
+          }
+        ]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 1,
+            title: { display: true, text: 'Probability' }
+          },
+          x: { title: { display: true, text: 'Day' } }
+        }
+      }
+    });
+  </script>
+  {% endif %}
+</body>
+</html>
